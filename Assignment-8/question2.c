@@ -2,10 +2,11 @@
 #include<stdlib.h>
 #include<stdbool.h>
 #include<limits.h>
-#define SIZE 10         //size of hashtable 
+#define SIZE 10
 
 int count;
 int hashTable[SIZE];
+int R = 7;              //first prime number less than hash table size
 
 void initializeHash()
 {
@@ -32,20 +33,22 @@ void insertKey(int key)
     int i=0, j=1, k=0;
     if(hashTable[index] != INT_MAX)
     {
-        while(hashTable[(index+k)%SIZE] != INT_MAX && j <= SIZE)
+        int h2 = R-(key%R);
+
+        while(hashTable[(index + i*h2)%SIZE] != INT_MAX && j <= SIZE)
         {
             i++;
-            k = i*i;
             j++;
         }
-        if(j > SIZE)
+
+         if(j > SIZE)
         {
-            printf("insufficient space for quadratic probing!\n");
+            printf("insufficient space for double probing!\n");
             return;
         }
-            printf("location: %d,k is: %d\n", (index+k)%SIZE,k);
-            hashTable[(index+k)%SIZE] = key;
-            count++;
+        printf("location: %d\n", (index + i*h2)%SIZE);
+        hashTable[(index + i*h2)%SIZE] = key;
+        count++;
     }
     else
     {   
@@ -63,20 +66,19 @@ bool isKeyPresent(int key)
         return true;
     else
     {
-        int i=0, j=1,k;
-        while(hashTable[(index+k)%SIZE] != key && j<SIZE)
+        int i=0, j=1;
+        int h2 = R-(key%R);
+        while(hashTable[(index + i*h2)%SIZE]!= key && j<SIZE)
         {
             i++;
-            k = i*i;
             j++;
         }
-        if(j==SIZE)
+        if(j == SIZE)
             return false;
         else
             return true;
     }
 }
-
 int searchKey(int key)
 {
     int index = key%SIZE;
@@ -87,22 +89,22 @@ int searchKey(int key)
     }
     else
     {
-        int i=0, j=1,k;
-        while(hashTable[(index+k)%SIZE] != key && j<SIZE)
+        int i=0, j=1;
+        int h2 = R-(key%R);
+        while(hashTable[(index + i*h2)%SIZE]!= key && j<SIZE)
         {
             i++;
-            k = i*i;
             j++;
         }
-        if(j==SIZE)
+        if(j == SIZE)
         {
             printf("Element not Found!\n");
             return -1;
         }
         else
         {
-            printf("Element found at location: %d\n", (index+k)%SIZE);
-            return (index+k)%SIZE;
+            printf("Element found at location: %d\n", (index + i*h2)%SIZE);
+            return (index + i*h2)%SIZE;
         }
     }
 }
@@ -110,7 +112,7 @@ int searchKey(int key)
 void deleteKey(int n)
 {
     int index = searchKey(n);
-    if(-1 != index)
+    if(index != -1)
     {
         hashTable[index] = INT_MAX;
         count--;
@@ -131,11 +133,11 @@ void main()
     bool exit = false;
     initializeHash();
     while(!exit)
-    {   
+    {
         displayHashTable();
         printf("Select below choice(hash size is: %d)\n1.Insert\n2.Search\n3.Delete\n4.LoadFactor\n5.Exit\n",SIZE);
         scanf("%d",&choice);
-        if(1 == choice)
+        if(choice == 1)
         {
             printf("Enter key to insert\n");
             scanf("%d",&n);
@@ -144,28 +146,28 @@ void main()
                     if(!isKeyPresent(n))
                         insertKey(n);
                     else
-                        printf("Key already present in hashTable\n");
+                        printf("Key present in hashTable\n");
                 }
             else
                 printf("Hash Full\n");
         }
-        else if(2 == choice)
+        else if(choice == 2)
         {
             printf("Enter key to Search\n");
             scanf("%d", &n);
             searchKey(n);
         }
-        else if(3 == choice)
+        else if(choice == 3)
         {
             printf("Enter key to delete\n");
             scanf("%d",&n);
             deleteKey(n);
         }
-        else if(4 == choice)
+        else if(choice == 4)
         {
             loadFactor();
         }
-        else if(5 == choice)
+        else if(choice == 5)
             exit = true;
         else
             {
