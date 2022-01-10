@@ -19,7 +19,7 @@ void displayHashTable()
     printf("Below is the hashTable\n");
     for(int i=0; i<SIZE; i++)
         {   
-            if(hashTable[i] == INT_MAX)
+            if(hashTable[i] == INT_MAX || hashTable[i] == INT_MIN)
                 printf(" %s ","_");
             else
                 printf(" %d ", hashTable[i]);
@@ -35,7 +35,7 @@ void insertKey(int key)
     {
         int h2 = R-(key%R);
 
-        while(hashTable[(index + i*h2)%SIZE] != INT_MAX && j <= SIZE)
+        while(hashTable[(index + i*h2)%SIZE] != INT_MIN && hashTable[(index + i*h2)%SIZE] != INT_MAX && j <= SIZE)
         {
             i++;
             j++;
@@ -79,19 +79,20 @@ bool isKeyPresent(int key)
             return true;
     }
 }
-int searchKey(int key)
+
+void deleteKey(int key)
 {
     int index = key%SIZE;
     if(hashTable[index] == key)
     {
-        printf("Key found at location: %d\n", index);
-        return index;
+        hashTable[index] = INT_MIN;
+        count--;
     }
     else
     {
         int i=0, j=1;
         int h2 = R-(key%R);
-        while(hashTable[(index + i*h2)%SIZE]!= key && j<SIZE)
+        while(hashTable[(index + i*h2)%SIZE] == INT_MIN || (hashTable[(index + i*h2)%SIZE]!= key && j<SIZE))
         {
             i++;
             j++;
@@ -99,25 +100,13 @@ int searchKey(int key)
         if(j == SIZE)
         {
             printf("Element not Found!\n");
-            return -1;
         }
         else
         {
-            printf("Element found at location: %d\n", (index + i*h2)%SIZE);
-            return (index + i*h2)%SIZE;
+            hashTable[(index + i*h2)%SIZE] = INT_MIN;
+            count--;
         }
     }
-}
-
-void deleteKey(int n)
-{
-    int index = searchKey(n);
-    if(index != -1)
-    {
-        hashTable[index] = INT_MAX;
-        count--;
-    }
-    // displayHashTable();
 }
 
 void loadFactor()
@@ -155,7 +144,7 @@ void main()
         {
             printf("Enter key to Search\n");
             scanf("%d", &n);
-            searchKey(n);
+            isKeyPresent(n);
         }
         else if(choice == 3)
         {

@@ -18,7 +18,7 @@ void displayHashTable()
     printf("Below is the hashTable\n");
     for(int i=0; i<SIZE; i++)
         {   
-            if(hashTable[i] == INT_MAX)
+            if(hashTable[i] == INT_MAX || hashTable[i] == INT_MIN)
                 printf(" %s ","_");
             else
                 printf(" %d ", hashTable[i]);
@@ -32,7 +32,7 @@ void insertKey(int key)
     int i=0, j=1, k=0;
     if(hashTable[index] != INT_MAX)
     {
-        while(hashTable[(index+k)%SIZE] != INT_MAX && j <= SIZE)
+        while(hashTable[(index+k)%SIZE] != INT_MIN && hashTable[(index+k)%SIZE] != INT_MAX && j <= SIZE)
         {
             i++;
             k = i*i;
@@ -70,25 +70,25 @@ bool isKeyPresent(int key)
             k = i*i;
             j++;
         }
-        if(j==SIZE)
+        if(j == SIZE)
             return false;
         else
             return true;
     }
 }
 
-int searchKey(int key)
+void deleteKey(int key)
 {
     int index = key%SIZE;
     if(hashTable[index] == key)
     {
-        printf("Key found at location: %d\n", index);
-        return index;
+        hashTable[index] = INT_MIN;
+        count--;
     }
     else
     {
         int i=0, j=1,k;
-        while(hashTable[(index+k)%SIZE] != key && j<SIZE)
+        while(hashTable[(index+k)%SIZE] == INT_MIN || (hashTable[(index+k)%SIZE] != key && j<SIZE))
         {
             i++;
             k = i*i;
@@ -97,25 +97,13 @@ int searchKey(int key)
         if(j==SIZE)
         {
             printf("Element not Found!\n");
-            return -1;
         }
         else
         {
-            printf("Element found at location: %d\n", (index+k)%SIZE);
-            return (index+k)%SIZE;
+            hashTable[(index+k)%SIZE] = INT_MIN;
+            count--;
         }
     }
-}
-
-void deleteKey(int n)
-{
-    int index = searchKey(n);
-    if(-1 != index)
-    {
-        hashTable[index] = INT_MAX;
-        count--;
-    }
-    // displayHashTable();
 }
 
 void loadFactor()
@@ -153,7 +141,7 @@ void main()
         {
             printf("Enter key to Search\n");
             scanf("%d", &n);
-            searchKey(n);
+            isKeyPresent(n);
         }
         else if(3 == choice)
         {
