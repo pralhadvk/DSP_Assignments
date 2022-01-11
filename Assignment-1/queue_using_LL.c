@@ -62,7 +62,7 @@ int main()
     int number,choice;
     bool exit = false;
 
-    while(exit)
+    while(!exit)
     {
         printf("Select the option for its corresponding action\n1. Enqueue\n2. Dequeue\n3. Display\n4. Exit\n");
         scanf("%d",&choice);
