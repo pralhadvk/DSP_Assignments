@@ -21,7 +21,7 @@ void enqueue(int number)
     {     
         temp->data = number;
         temp->next = NULL;
-        if(front == NULL)                      
+        if(NULL == front)                      
             front = rear = temp;        //if queue is initially empty set front and rear to new node
         else
         {
@@ -34,7 +34,7 @@ void enqueue(int number)
 void dequeue()
 {
     struct Node *temp;
-    if(front == NULL)
+    if(NULL == front)
         printf("Queue is Empty!!\n");
     else
     {
@@ -60,29 +60,29 @@ void display()
 int main()
 {
     int number,choice;
-    bool noexit = true;
+    bool exit = false;
 
-    while(noexit)
+    while(exit)
     {
         printf("Select the option for its corresponding action\n1. Enqueue\n2. Dequeue\n3. Display\n4. Exit\n");
         scanf("%d",&choice);
-        if(choice == 1)
+        if(1 == choice)
         {
             printf("Enter number to enqueue\n");
             scanf("%d",&number);
             enqueue(number);
         }
-        else if(choice == 2)
+        else if(2 == choice)
         {
             dequeue();
         }
-        else if(choice == 3)
+        else if(3 == choice)
         {
             display();
             printf("\n");
         }
-        else if(choice == 4)
-            noexit = false;
+        else if(4 == choice)
+            exit = true;
         
         else
             printf("Select the correct choice\n");
