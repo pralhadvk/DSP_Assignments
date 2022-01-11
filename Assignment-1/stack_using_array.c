@@ -6,7 +6,7 @@ int arr[10], top=-1;
 
 void push(int number)
 {
-    if(top == 9)
+    if(9 == top)
         printf("Stack full!!\n");
     else
         arr[++top] = number;
@@ -14,7 +14,7 @@ void push(int number)
 
 void pop()
 {
-    if(top == -1)
+    if(-1 == top)
         printf("Stack is empty!!\n");
     else
         arr[top--] = 0;
@@ -34,31 +34,31 @@ void display()
 int main()
 {
     int number,choice;
-    bool noexit = true;
+    bool exit = false;
     printf("Size of stack is 10 Elements\n");
 
-    while(noexit)
+    while(!exit)
     {
         printf("Select the option for its corresponding action\n1. Push\n2. Pop\n3. Display\n4. Exit\n");
         scanf("%d",&choice);
-        if(choice == 1)
+        if(1 == choice)
         {
             printf("Enter number except 0 to push\n");
             scanf("%d",&number);
             push(number);
         }
-        else if(choice == 2)
+        else if(2 == choice)
         {
             pop();
         }
-        else if(choice == 3)
+        else if(3 == choice)
         {
             display();
             printf("\n");
         }
-        else if(choice == 4)
+        else if(4 == choice)
         {
-            noexit = false;
+            exit = true;
         }
         else
             printf("Select the correct choice\n");
