@@ -35,7 +35,7 @@ void display(struct Queue *q)
 int main()
 {
     int number,choice,N;
-    bool noexit = true;
+    bool exit = false;
     printf("Enter size of array\n");
     scanf("%d",&N);
 
@@ -44,27 +44,27 @@ int main()
     q->size = N;
     q->arr = (int *)malloc(q->size*sizeof(int));
 
-    while(noexit)
+    while(!exit)
     {
         printf("Select the option for its corresponding action\n1. Enqueue\n2. Dequeue\n3. Display\n4. Exit\n");
         scanf("%d",&choice);
-        if(choice == 1)
+        if(1 == choice)
         {
             printf("Enter number to enqueue\n");
-                    scanf("%d",&number);
-                    enqueue(q,number);
+            scanf("%d",&number);
+            enqueue(q,number);
         }
-        else if(choice == 2)
+        else if(2 == choice)
         {
             dequeue(q);
         }
-        else if(choice == 3)
+        else if(3 == choice)
         {
             display(q);
             printf("\n");
         }
-        else if(choice == 4)
-            noexit = false;
+        else if(4 == choice)
+            exit = true;
         
         else
             printf("Select the correct choice\n");
